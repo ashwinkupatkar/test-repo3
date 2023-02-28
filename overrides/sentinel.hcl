@@ -19,8 +19,8 @@ param "allowed_dns_servers" {
   value = ["100.0.0.4", "100.0.0.5",]
 }
 
-policy "allowed-dns-servers" {
+policy "approved-dns-servers" {
 #   source = "../base-policies/allowed-dns-servers.sentinel"
-   source = "./allowed-dns-servers.sentinel"
+   source = "./approved-dns-servers.sentinel"
    enforcement_level = "soft-mandatory"
 }
