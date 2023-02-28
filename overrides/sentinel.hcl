@@ -14,13 +14,14 @@ module "exemptions" {
     source = "../common-functions/exemptions.sentinel"
 }
 
-policy "storage-account-settings2" {
-    source = "./storage-account-settings2.sentinel"
-    enforcement_level = "soft-mandatory"
-}
-   
-policy "log-retention" {
-    source = "./log-retention.sentinel"
-    enforcement_level = "soft-mandatory"
 }
 
+## Override parameters
+param "allowed_dns_servers" {
+  value = ["10.0.0.4", "10.0.0.5",]
+}
+
+policy "allowed-dns-servers" {
+   source = "../base-policies/allowed-dns-servers.sentinel"
+   enforcement_level = "soft-mandatory"
+}
