@@ -20,6 +20,7 @@ param "allowed_dns_servers" {
 }
 
 policy "allowed-dns-servers" {
-   source = "../base-policies/allowed-dns-servers.sentinel"
+#   source = "../base-policies/allowed-dns-servers.sentinel"
+   source = "./allowed-dns-servers.sentinel"
    enforcement_level = "soft-mandatory"
 }
