@@ -14,8 +14,6 @@ module "exemptions" {
     source = "../common-functions/exemptions.sentinel"
 }
 
-}
-
 ## Override parameters
 param "allowed_dns_servers" {
   value = ["100.0.0.4", "100.0.0.5",]
