@@ -16,18 +16,16 @@ print("Ensure logs are retained for more than x days")
 get_log_retention_threshold_value = func() {
      if workspace_name == "ws1-ashwin" {
           threshold_value = 30
-     }
-     else {
+     } else {
           threshold_value = 90
      }
      return threshold_value
 }
 
 ensure_log_retention = rule { 
-     threshold_value = get_log_retention_threshold_value()
 
      all allResources as _, rs {
-         rs.change.after.retention_in_days > threshold_value
+         rs.change.after.retention_in_days > get_log_retention_threshold_value()
    }   
 }
 
