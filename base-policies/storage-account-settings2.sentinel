@@ -1,0 +1,58 @@
+import "tfplan/v2" as tfplan
+import "exemptions"
+
+policy_id = "SECPOL001"
+
+allStorageAccounts = filter tfplan.resource_changes as _, rc {
+        rc.type is "azurerm_storage_account" and 
+        (rc.change.actions contains "create" or rc.change.actions contains "no-op" or
+        rc.change.actions contains "update") and  rc.mode is "managed" and 
+        rc.provider_name is "registry.terraform.io/hashicorp/azurerm" 
+}
+
+print("Ensure cross_tenant_replication is enabled, allow_nested_items_to_be_public is enabled, shared_access_key_enabled are disabled and identity type is set as system assigned")
+
+cross_tenant_replication_enabled = rule { 
+     all allStorageAccounts as _, sa {
+         sa.change.after.cross_tenant_replication_enabled is true
+   }   
+}
+
+disallow_nested_items_to_be_public = rule {
+     all allStorageAccounts as _, sa {
+         sa.change.after.allow_nested_items_to_be_public is true
+   }
+}
+
+shared_access_key_enabled = rule {
+     all allStorageAccounts as _, sa {
+         sa.change.after.shared_access_key_enabled is not true
+   }
+}
+
+identity_block_exists = rule {
+     all allStorageAccounts as _, sa {
+         sa.change.after.identity is not "[]"
+   }
+}
+
+identity_type = rule when identity_block_exists is true {
+     all allStorageAccounts as _, sa {
+         all sa.change.after.identity as _, i {
+             i.type is "SystemAssigned"
+      }
+   }
+}
+
+
+sentinel_eval = rule when exemptions.is_exempt(policy_id) is false {
+   cross_tenant_replication_enabled and
+   disallow_nested_items_to_be_public and
+   shared_access_key_enabled and
+   identity_block_exists else false and
+   identity_type
+}
+main = rule {
+   sentinel_eval
+}
+

@@ -1,0 +1,36 @@
+import "tfplan/v2" as tfplan
+import "tfrun"
+
+workspace_name = tfrun.workspace.name
+
+allResources = filter tfplan.resource_changes as _, rc {
+        rc.type is "azurerm_log_analytics_workspace" and 
+        (rc.change.actions contains "create" or rc.change.actions contains "no-op" or
+        rc.change.actions contains "update") and  rc.mode is "managed" and 
+        rc.provider_name is "registry.terraform.io/hashicorp/azurerm" 
+}
+
+print("Ensure logs are retained for more than x days")
+
+
+get_log_retention_threshold_value = func() {
+     if workspace_name == "ws1-ashwin" {
+          threshold_value = 30
+     }
+     else {
+          threshold_value = 90
+     }
+     return threshold_value
+}
+
+ensure_log_retention = rule { 
+     threshold_value = get_log_retention_threshold_value()
+
+     all allResources as _, rs {
+         rs.change.after.retention_in_days > threshold_value
+   }   
+}
+
+main = rule {
+     ensure_log_retention
+}

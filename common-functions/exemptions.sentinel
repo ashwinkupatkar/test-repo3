@@ -1,0 +1,14 @@
+import "tfrun"
+
+is_exempt = func(id) {
+  return workspace_exemptions[id] contains tfrun.workspace.id
+}
+
+workspace_exemptions = {
+	"SECPOL001": [
+  	"ws-EqAsYAehsdyHfUSA",
+  ],
+  	"SECPOL002": [
+  	"ws-cyFyScqFd2HTR5i2",
+  ],
+}
