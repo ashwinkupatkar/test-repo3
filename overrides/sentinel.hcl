@@ -18,7 +18,7 @@ module "exemptions" {
 
 ## Override parameters
 param "allowed_dns_servers" {
-  value = ["10.0.0.4", "10.0.0.5",]
+  value = ["100.0.0.4", "100.0.0.5",]
 }
 
 policy "allowed-dns-servers" {
