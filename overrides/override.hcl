@@ -1,3 +1,3 @@
-policy "allowed-dns-servers" {
+policy "approved-dns-servers" {
   enforcement_level = "advisory"
 }
