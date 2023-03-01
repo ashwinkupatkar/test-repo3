@@ -23,14 +23,3 @@ policy "log-retention" {
     source = "./log-retention.sentinel"
     enforcement_level = "soft-mandatory"
 }
-
-    
-## Override parameters
-param "allowed_dns_servers" {
-  value = ["100.0.0.4", "100.0.0.5",]
-}
-
-policy "approved-dns-servers" {
-   source = "./approved-dns-servers.sentinel"
-   enforcement_level = "advisory"
-}
