@@ -1,7 +1,8 @@
 import "tfplan/v2" as tfplan
 import "strings"
 
-param allowed_dns_servers default ["10.0.0.4", "10.0.0.5",]
+//param allowed_dns_servers default ["10.0.0.4", "10.0.0.5",]
+param allowed_dns_servers
 
 allVirtualNetworks = filter tfplan.resource_changes as _, rc {
         (rc.type is "azurerm_virtual_network") and 
