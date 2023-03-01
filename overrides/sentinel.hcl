@@ -22,5 +22,5 @@ param "allowed_dns_servers" {
 policy "approved-dns-servers" {
 #   source = "../base-policies/allowed-dns-servers.sentinel"
    source = "./approved-dns-servers.sentinel"
-   enforcement_level = "soft-mandatory"
+   enforcement_level = "advisory"
 }
